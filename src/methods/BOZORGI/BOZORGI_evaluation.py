@@ -1,7 +1,10 @@
-path = "c:\\Users\\u0166838\\OneDrive - KU Leuven\\Documents\\Doc\\Code\\SimBank from Simulation to Solution in Prescriptive Process Monitoring"
 data_folder = "data"
 results_folder = "res"
 import sys
+import os
+parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../"))
+sys.path.append(parent_dir)
+from config.config import path
 sys.path.append(path)
 sys.path.append(path + "\\SimBank")
 

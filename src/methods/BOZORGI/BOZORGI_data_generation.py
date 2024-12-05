@@ -1,7 +1,10 @@
-path = "c:\\Users\\u0166838\\OneDrive - KU Leuven\\Documents\\Doc\\Code\\SimBank from Simulation to Solution in Prescriptive Process Monitoring"
 data_folder = "data"
 results_folder = "res"
 import sys
+import os
+parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../"))
+sys.path.append(parent_dir)
+from config.config import path
 sys.path.append(path)
 sys.path.append(path + "\\SimBank")
 
@@ -90,8 +93,8 @@ gen_RCT = simulation.PresProcessGenerator(dataset_params_RCT, dataset_params_RCT
 train_RCT = gen_RCT.run_simulation_normal(dataset_params_RCT["train_size"])
 train_RCT_val = gen_RCT.run_simulation_normal(dataset_params_RCT["train_val_size"], seed_to_add=88)
 ##### Save data
-save_data(dataset_params, data_folder + dataset_params["filename"] + "_" + str(dataset_params["train_size"]) + "_dataset_params_BOZORGI_RealCause")
-save_data(train_normal, data_folder + dataset_params["filename"] + "_" + str(dataset_params["train_size"]) + "_train_normal_BOZORGI_RealCause")
-save_data(train_normal_val, data_folder + dataset_params["filename"] + "_" + str(dataset_params["train_size"]) + "_train_normal_val_BOZORGI_RealCause")
-save_data(train_RCT, data_folder + dataset_params["filename"] + "_" + str(dataset_params["train_size"]) + "_train_RCT_BOZORGI_RealCause")
-save_data(train_RCT_val, data_folder + dataset_params["filename"] + "_" + str(dataset_params["train_size"]) + "_train_RCT_val_BOZORGI_RealCause")
+save_data(dataset_params, data_folder + "\\" + dataset_params["filename"] + "_" + str(dataset_params["train_size"]) + "_dataset_params_BOZORGI_RealCause")
+save_data(train_normal, data_folder + "\\" + dataset_params["filename"] + "_" + str(dataset_params["train_size"]) + "_train_normal_BOZORGI_RealCause")
+save_data(train_normal_val, data_folder + "\\" + dataset_params["filename"] + "_" + str(dataset_params["train_size"]) + "_train_normal_val_BOZORGI_RealCause")
+save_data(train_RCT, data_folder + "\\" + dataset_params["filename"] + "_" + str(dataset_params["train_size"]) + "_train_RCT_BOZORGI_RealCause")
+save_data(train_RCT_val, data_folder + "\\" + dataset_params["filename"] + "_" + str(dataset_params["train_size"]) + "_train_RCT_val_BOZORGI_RealCause")
