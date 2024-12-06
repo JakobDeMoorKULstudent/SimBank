@@ -1,5 +1,5 @@
 # SimBank: from Simulation to Solution in Prescriptive Process Monitoring
-This repository provides the code for the paper *"SimBank: from Simulation to Solution in Prescriptive Process Monitoring"*.
+This repository provides the code for the paper *"SimBank: from Simulation to Solution in Prescriptive Process Monitoring"*. 
 
 The structure of the code is as follows:
 ```
@@ -13,7 +13,7 @@ SimBank from Simulation to Solution in Prescriptive Process Monitoring/
   |_ extra_flow_conditions.py                 # The (extra) underlying mechanism of the control-flow         
   |_ petri_net_generator.py                   # Setup initial control-flow
   |_ requirements.txt                         # Requirements of the SimBank simulator only
-  |_ SimBank_Generator_Guide.ipynb            **SimBank Guide** # : a complete guide on how to use SimBank       
+  |_ SimBank_Generator_Guide.ipynb            SIMBANK GUIDE # : a complete guide on how to use SimBank       
   |_ simulation.py                            # Main simulator code
 |_ scripts/
   |_ BOZORGI_run.py                           # Experiments of the RealCause-based S-learner (based on Bozorgi et. al)                    
@@ -55,8 +55,8 @@ SimBank from Simulation to Solution in Prescriptive Process Monitoring/
 ```
 
 ## Installation.
-The ```requirements.txt``` provides the necessary packages.
-All code was written for ```python 3.10.13```.
+The ```requirements_all_code.txt``` file provides the necessary packages for SimBank and all experiments. The ```SimBank/requirements.txt``` file provides the necessary packages for SimBank only.
+All code was written for ```python 3.11.5```.
 
 ## SimBank
 The complete SimBank simulator can be found in the ```SimBank/``` folder. The file SimBank_Generator_Guide.ipynb contains a full walkthrough on how to use SimBank to create offline datasets and allow online training for each intervention, to vary the confounding level, and to evaluate method policies.
