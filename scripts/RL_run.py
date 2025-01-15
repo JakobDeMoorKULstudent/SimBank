@@ -272,7 +272,7 @@ for iteration in range(num_iterations):
         model_list.append(RL_model.final_net)
         model_best_step_list.append(RL_model.best_step)
         if big_data:
-            save_data(RL_model.final_net, results_path + "_model_iteration_" + str(iteration))
+            torch.save(RL_model.final_net.state_dict(), results_path + "_model_state_iteration_" + str(iteration), _use_new_zipfile_serialization=False)
             save_data(RL_model.best_step, results_path + "_best_step_iteration_" + str(iteration))
             save_data(RL_model.best_optimization_step, results_path + "_efficiency_iteration_" + str(iteration))
 
@@ -280,7 +280,7 @@ for iteration in range(num_iterations):
     
     else:
         RL_model.init_train_params(training_params=training_params, iteration=iteration)
-        RL_model.final_net = load_data(results_path + "_model_iteration_" + str(iteration))
+        RL_model.load_best_model(model_path=results_path + "_model_state_iteration_" + str(iteration))
         RL_model.best_step = load_data(results_path + "_best_step_iteration_" + str(iteration))
         RL_model.best_optimization_step = load_data(results_path + "_efficiency_iteration_" + str(iteration))
         model_list.append(RL_model.final_net)

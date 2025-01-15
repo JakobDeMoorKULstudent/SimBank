@@ -22,8 +22,8 @@ from src.methods.BRANCHI.BRANCHI_RL_training import RLModel
 #DATASET parameters
 intervention_name = ["time_contact_HQ"]
 train_size = 100000
-big_data = False
-# big_data = True
+# big_data = False
+big_data = True
 # already_preprocessed = False
 already_preprocessed = True
 if not big_data:
@@ -35,6 +35,7 @@ num_iterations = 5
 # already_trained = True
 already_trained = False
 calc_realcause_performance = True
+# calc_realcause_performance = False
 train_size_realcause = 10000
 # calc_realcause_performance = False
 bias_path = "" # Always not biased (online method)

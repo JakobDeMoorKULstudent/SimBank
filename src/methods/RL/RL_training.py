@@ -726,11 +726,21 @@ class RLModel():
 
         print('Training complete')
 
-    def load_best_model(self):
+    def load_best_model(self, model_path=None):
         self.final_net = deepcopy(self.policy_net)
-        if os.path.exists(self.earlystopfile):
+        if os.path.exists(self.earlystopfile) and model_path is None:
             print('Loading best model')
             self.final_net.load_state_dict(torch.load(self.earlystopfile))
+        else:
+            print('Loading model from path')
+            self.final_net.load_state_dict(torch.load(model_path))
+            self.best_model = deepcopy(self.final_net)
+            # send to cpu
+            self.best_model = self.best_model.to("cpu")
+            self.final_net = self.final_net.to("cpu")
+            self.policy_net = self.policy_net.to("cpu")
+            gc.collect()
+            torch.cuda.empty_cache()
         if self.print_model_params:
             print('Final net: ')
             for name, param in self.final_net.state_dict().items():

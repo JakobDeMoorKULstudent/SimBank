@@ -238,124 +238,151 @@ if big_data:
 
 
 
-# ##### Empty cache
-# import torch
-# torch.cuda.empty_cache()
-# ##### Run
-# num_iterations = 5
+##### Empty cache
+import torch
+torch.cuda.empty_cache()
+##### Run
+num_iterations = 5
 
-# realcause_model_list = []
-# prep_utils_realcause = []
-# if intervention_name == ['time_contact_HQ'] and calculate_realcause_performance:
-#     for iteration in range(num_iterations):
-#         if intervention_name == ['time_contact_HQ']:
-#             realcause_model = load_data(results_path_realcause + "model_" + str(0) + "_" + str(iteration) + "_BOZORGI_RealCause" + bias_path)
-#             realcause_model_list.append(realcause_model)
-#     prep_utils_realcause = load_data(os.path.join(os.getcwd(), data_folder, dataset_params["filename"] + "_" + str(train_size_realcause) + "_prep_utils_BOZORGI_RealCause" + bias_path))
+realcause_model_list = []
+prep_utils_realcause = []
+if intervention_name == ['time_contact_HQ'] and calculate_realcause_performance:
+    for iteration in range(num_iterations):
+        if intervention_name == ['time_contact_HQ']:
+            realcause_model = load_data(results_path_realcause + "model_" + str(0) + "_" + str(iteration) + "_BOZORGI_RealCause" + bias_path)
+            realcause_model_list.append(realcause_model)
+    prep_utils_realcause = load_data(os.path.join(os.getcwd(), data_folder, dataset_params["filename"] + "_" + str(train_size_realcause) + "_prep_utils_BOZORGI_RealCause" + bias_path))
     
 
-# #INITIALIZE EVALUATOR AND VALIDATOR
-# CI_evaluator = CIModelEvaluator(
-#     model_params=model_params,
-#     int_dataset_params=int_dataset_params,
-#     full_dataset_params=dataset_params,
-#     prep_utils=prep_utils,
-#     realcause_model_list=realcause_model_list,
-#     realcause_prep_utils=prep_utils_realcause,
-#     # print_cases=True
-#     )
+#INITIALIZE EVALUATOR AND VALIDATOR
+CI_evaluator = CIModelEvaluator(
+    model_params=model_params,
+    int_dataset_params=int_dataset_params,
+    full_dataset_params=dataset_params,
+    prep_utils=prep_utils,
+    realcause_model_list=realcause_model_list,
+    realcause_prep_utils=prep_utils_realcause,
+    # print_cases=True
+    )
 
-# CI_validator = CIModelValidator(full_dataset_params=dataset_params)
+CI_validator = CIModelValidator(full_dataset_params=dataset_params)
 
-# #GET BASELINE PERFORMANCE
-# if calculate_other_policies_test:
-#     bank_performance = CI_evaluator.bank_policy_inference(n_cases=dataset_params["test_size"])
-#     print("Bank performance: ", bank_performance, "\n")
-#     save_data(bank_performance, std_policies_path + "\\Bank\\" + + dataset_params["filename"] + "_" + str(dataset_params["train_size"]) + "_bank_performance" + bias_path)
+#GET BASELINE PERFORMANCE
+if calculate_other_policies_test:
+    bank_performance = CI_evaluator.bank_policy_inference(n_cases=dataset_params["test_size"])
+    print("Bank performance: ", bank_performance, "\n")
+    save_data(bank_performance, std_policies_path + "\\Bank\\" + + dataset_params["filename"] + "_" + str(dataset_params["train_size"]) + "_bank_performance" + bias_path)
 
-#     for iteration in range(num_iterations):
-#         if iteration in iterations_to_skip:
-#             continue
-#         random_performance = CI_evaluator.random_policy_inference(n_cases=dataset_params["test_size"], iteration=iteration)
-#         print("Random performance: ", random_performance, "\n")
-#         save_data(random_performance, std_policies_path + "\\Random\\" + dataset_params["filename"] + "_" + str(dataset_params["train_size"]) + "_random_performance_" + str(iteration) + bias_path)
+    for iteration in range(num_iterations):
+        if iteration in iterations_to_skip:
+            continue
+        random_performance = CI_evaluator.random_policy_inference(n_cases=dataset_params["test_size"], iteration=iteration)
+        print("Random performance: ", random_performance, "\n")
+        save_data(random_performance, std_policies_path + "\\Random\\" + dataset_params["filename"] + "_" + str(dataset_params["train_size"]) + "_random_performance_" + str(iteration) + bias_path)
 
-# #INITIALIZE PERFORMANCE DICTIONARIES
-# model_performance_dict = {}
-# model_avg_performance_dict = {}
-# model_stdev_performance_dict = {}
-# opt_th_dict = {}
-# model_dict = {}
-# model_per_key_per_iteration = {}
+#INITIALIZE PERFORMANCE DICTIONARIES
+model_performance_dict = {}
+model_avg_performance_dict = {}
+model_stdev_performance_dict = {}
+opt_th_dict = {}
+model_dict = {}
+model_per_key_per_iteration = {}
 
-# for key in exp_keys:
-#     model_performance_dict[key] = []
-#     opt_th_dict[key] = []
-#     model_per_key_per_iteration[key] = {}
-#     for iteration in range(num_iterations):
-#         if iteration in iterations_to_skip:
-#             continue
-#         CI_model_list = [None] * len(dataset_params["intervention_info"]["name"])
-#         if not alread_trained:
-#             for int_index, intervention in enumerate(dataset_params["intervention_info"]["name"]):
-#                 training_params["filename"] = "loan_log_" +  str(dataset_params["intervention_info"]["name"]) + "_" + str(dataset_params["train_size"]) + "_" + exp + "_iteration_" + str(iteration) + "_intervention_" + str(intervention)
+for key in exp_keys:
+    model_performance_dict[key] = []
+    opt_th_dict[key] = []
+    model_per_key_per_iteration[key] = {}
+    for iteration in range(num_iterations):
+        if iteration in iterations_to_skip:
+            continue
+        CI_model_list = [None] * len(dataset_params["intervention_info"]["name"])
+        if not alread_trained:
+            for int_index, intervention in enumerate(dataset_params["intervention_info"]["name"]):
+                training_params["filename"] = "loan_log_" +  str(dataset_params["intervention_info"]["name"]) + "_" + str(dataset_params["train_size"]) + "_" + exp + "_iteration_" + str(iteration) + "_intervention_" + str(intervention)
                 
-#                 train_prep_dict = train_prep[int_index]
-#                 train_val_prep_dict = train_val_prep[int_index]
-#                 prep_utils_dict = prep_utils[int_index]
+                train_prep_dict = train_prep[int_index]
+                train_val_prep_dict = train_val_prep[int_index]
+                prep_utils_dict = prep_utils[int_index]
 
-#                 #INITIALIZE MODEL
-#                 CI_model_list[int_index] = CIModel(
-#                     model_params=model_params,
-#                     int_dataset_params=int_dataset_params[int_index],
-#                     full_dataset_params=dataset_params,
-#                     data_train=train_prep_dict[key],
-#                     data_train_val=train_val_prep_dict[key],
-#                     prep_utils=prep_utils_dict[key],
-#                     iteration=iteration)
+                #INITIALIZE MODEL
+                CI_model_list[int_index] = CIModel(
+                    model_params=model_params,
+                    int_dataset_params=int_dataset_params[int_index],
+                    full_dataset_params=dataset_params,
+                    data_train=train_prep_dict[key],
+                    data_train_val=train_val_prep_dict[key],
+                    prep_utils=prep_utils_dict[key],
+                    iteration=iteration)
 
-#                 #TRAINING
-#                 CI_model_list[int_index].start_training(training_params=training_params, key=key, iteration=iteration)
+                #TRAINING
+                CI_model_list[int_index].start_training(training_params=training_params, key=key, iteration=iteration)
 
-#                 torch.cuda.empty_cache()
+                torch.cuda.empty_cache()
 
-#             model_per_key_per_iteration[key][iteration] = CI_model_list
-#             efficiency = 0
-#             for model in CI_model_list:
-#                 efficiency += model.best_optimization_step
-#             if big_data:
-#                 save_data(model_per_key_per_iteration[key][iteration], results_path + "_model_class_iteration_" + str(iteration) + "_key_" + str(key) + bias_path)
-#                 save_data(efficiency, results_path + "_model_efficiency_iteration_" + str(iteration) + "_key_" + str(key) + bias_path)
+            model_per_key_per_iteration[key][iteration] = CI_model_list
+            efficiency = 0
+            for model in CI_model_list:
+                efficiency += model.best_optimization_step
+            if big_data:
+                CI_actual_model_list = []
+                for model in CI_model_list:
+                    CI_actual_model_list.append(model.model)
+                torch.save([net.state_dict() for net in CI_actual_model_list], results_path + "_model_state_iteration_" + str(iteration) + "_key_" + str(key) + bias_path)
+                save_data(efficiency, results_path + "_model_efficiency_iteration_" + str(iteration) + "_key_" + str(key) + bias_path)
                 
-#             #TUNING
-#             if training_params["tuning"]:
-#                 opt_th, opt_obj = CI_validator.threshold_tuning(CI_evaluator=CI_evaluator, model_list=CI_model_list, key=key, iteration=iteration, model_params=model_params)
-#             else:
-#                 opt_th = 0
-#             opt_th_dict[key].append(opt_th)
-#             if big_data:
-#                 save_data(opt_th, results_path + "_opt_th_iteration_" + str(iteration) + "_key_" + str(key) + bias_path)
+            #TUNING
+            if training_params["tuning"]:
+                opt_th, opt_obj = CI_validator.threshold_tuning(CI_evaluator=CI_evaluator, model_list=CI_model_list, key=key, iteration=iteration, model_params=model_params)
+            else:
+                opt_th = 0
+            opt_th_dict[key].append(opt_th)
+            if big_data:
+                save_data(opt_th, results_path + "_opt_th_iteration_" + str(iteration) + "_key_" + str(key) + bias_path)
 
-#             torch.cuda.empty_cache()
-#         else:
-#             CI_model_list = load_data(results_path + "_model_class_iteration_" + str(iteration) + "_key_" + str(key) + bias_path)
-#             opt_th = load_data(results_path + "_opt_th_iteration_" + str(iteration) + "_key_" + str(key) + bias_path)
-#             efficiency = load_data(results_path + "_model_efficiency_iteration_" + str(iteration) + "_key_" + str(key) + bias_path)
-#             model_per_key_per_iteration[key][iteration] = CI_model_list
+            torch.cuda.empty_cache()
+        else:
+            for int_index, intervention in enumerate(dataset_params["intervention_info"]["name"]):
+                training_params["filename"] = "loan_log_" +  str(dataset_params["intervention_info"]["name"]) + "_" + str(dataset_params["train_size"]) + "_" + exp + "_iteration_" + str(iteration) + "_intervention_" + str(intervention)
+                train_prep_dict = train_prep[int_index]
+                train_val_prep_dict = train_val_prep[int_index]
+                prep_utils_dict = prep_utils[int_index]
+                print("train prep dict", train_prep_dict)
+                #INITIALIZE MODEL
+                CI_model_list[int_index] = CIModel(
+                    model_params=model_params,
+                    int_dataset_params=int_dataset_params[int_index],
+                    full_dataset_params=dataset_params,
+                    data_train=train_prep_dict[key],
+                    data_train_val=train_val_prep_dict[key],
+                    prep_utils=prep_utils_dict[key],
+                    iteration=iteration)
+
+
+            CI_actual_model_list = []
+            for model in CI_model_list:
+                CI_actual_model_list.append(model.model)
+            for net, params in zip(CI_actual_model_list, torch.load(results_path + "_model_state_iteration_" + str(iteration) + "_key_" + str(key) + bias_path)):
+                net.load_state_dict(params)
+            for index, model in enumerate(CI_actual_model_list):
+                CI_model_list[index].model = model
+            opt_th = load_data(results_path + "_opt_th_iteration_" + str(iteration) + "_key_" + str(key) + bias_path)
+            efficiency = load_data(results_path + "_model_efficiency_iteration_" + str(iteration) + "_key_" + str(key) + bias_path)
+            model_per_key_per_iteration[key][iteration] = CI_model_list
+            print('Model loaded', '\n')
         
-#         #GET MODEL PERFORMANCE
-#         model_performance, model_realcause_performance = CI_evaluator.model_policy_inference(n_cases=dataset_params["test_size"], model_list=model_per_key_per_iteration[key][iteration], key=key, iteration=iteration, opt_th=opt_th, calculate_realcause_performance=calculate_realcause_performance)
-#         # make sure model_performance is a float
-#         model_performance = float(model_performance)
-#         model_performance_dict[key].append(model_performance)
-#         print("Key: ", key, ", Iteration: ", iteration, ", Full model performance and efficiency: ", model_performance, "; ", efficiency, ", Realcause performance: ", model_realcause_performance, "\n")
-#         if big_data:
-#             save_data(model_performance, results_path + "_model_performance_iteration_" + str(iteration) + "_key_" + str(key) + bias_path)
-#             if calculate_realcause_performance:
-#                 save_data(model_realcause_performance, results_path + "_model_realcause_performance_iteration_" + str(iteration) + "_key_" + str(key) + bias_path)
-#             print("Model action timings: ", CI_evaluator.model_action_timings, "\n")
-#             save_data(CI_evaluator.model_action_timings, results_path + "_model_action_timings_iteration_" + str(iteration) + "_key_" + str(key) + bias_path)
-#             print("Model actions: ", CI_evaluator.model_actions, "\n")
-#             save_data(CI_evaluator.model_actions, results_path + "_model_actions_iteration_" + str(iteration) + "_key_" + str(key) + bias_path)
-#             #save model test set df
-#             save_data(CI_evaluator.test_set_df, results_path + "_test_set_df_iteration_" + str(iteration) + "_key_" + str(key) + bias_path)
+        #GET MODEL PERFORMANCE
+        model_performance, model_realcause_performance = CI_evaluator.model_policy_inference(n_cases=dataset_params["test_size"], model_list=model_per_key_per_iteration[key][iteration], key=key, iteration=iteration, opt_th=opt_th, calculate_realcause_performance=calculate_realcause_performance)
+        # make sure model_performance is a float
+        model_performance = float(model_performance)
+        model_performance_dict[key].append(model_performance)
+        print("Key: ", key, ", Iteration: ", iteration, ", Full model performance and efficiency: ", model_performance, "; ", efficiency, ", Realcause performance: ", model_realcause_performance, "\n")
+        if big_data:
+            save_data(model_performance, results_path + "_model_performance_iteration_" + str(iteration) + "_key_" + str(key) + bias_path)
+            if calculate_realcause_performance:
+                save_data(model_realcause_performance, results_path + "_model_realcause_performance_iteration_" + str(iteration) + "_key_" + str(key) + bias_path)
+            print("Model action timings: ", CI_evaluator.model_action_timings, "\n")
+            save_data(CI_evaluator.model_action_timings, results_path + "_model_action_timings_iteration_" + str(iteration) + "_key_" + str(key) + bias_path)
+            print("Model actions: ", CI_evaluator.model_actions, "\n")
+            save_data(CI_evaluator.model_actions, results_path + "_model_actions_iteration_" + str(iteration) + "_key_" + str(key) + bias_path)
+            #save model test set df
+            save_data(CI_evaluator.test_set_df, results_path + "_test_set_df_iteration_" + str(iteration) + "_key_" + str(key) + bias_path)
