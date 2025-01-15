@@ -9,7 +9,7 @@ SimBank from Simulation to Solution in Prescriptive Process Monitoring/
 |_ res/                             # Results of the experiments
 |_ SimBank/                         # The full SimBank simulator
   |_ activity_execution.py                    # Execute an acivity in the process            
-  |_ confounding level.py                     # Create a dataset with a specified confounding bias level
+  |_ confounding level.py                     # Create a dataset with a specified confounding level
   |_ extra_flow_conditions.py                 # The (extra) underlying mechanism of the control-flow         
   |_ petri_net_generator.py                   # Setup initial control-flow
   |_ requirements.txt                         # Requirements of the SimBank simulator only
